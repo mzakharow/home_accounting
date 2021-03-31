@@ -1,0 +1,41 @@
+{% extends "__base.html" %}
+{% block title %}Заполнение анкеты{% endblock %}
+{% block container %}
+{#    <div class="row justify-content-md-center">#}
+{#        <div class="col col-lg-3">#}
+{#            <h1>Регистрация</h1>#}
+{#            <form action="." method="post">#}
+{#                {{ user_form.as_p }}#}
+{#                {% csrf_token %}#}
+{#                <button type="submit" class="btn btn-success">Регистрация</button>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">
+                        {{ message|safe }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-4">
+            <form action="." method="post">
+                <p><label for="id_username">Имя пользователя:</label> <input type="text" class="form-control" name="username" maxlength="150" required="" id="id_username"></p>
+                {{ user_form.username.errors }}
+                <p><label for="id_email">Адрес электронной почты:</label> <input type="email" required="" class="form-control" name="email" maxlength="254" id="id_email"></p>
+                {{ user_form.email.errors }}
+                <p><label for="id_password">Пароль:</label> <input type="password" class="form-control" name="password" required="" id="id_password"></p>
+                <p><label for="id_repeat_password">Пвторение пароля:</label> <input type="password" class="form-control" name="repeat_password" required="" id="id_repeat_password"></p>
+                {{ user_form.repeat_password.errors }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Регистрация</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

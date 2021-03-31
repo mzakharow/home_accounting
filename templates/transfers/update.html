@@ -1,0 +1,20 @@
+{% extends "__base.html" %}
+{% block container %}
+    {% if request.user == transfer.user %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Изменить запись #{{transfer}}</h5>
+            </div>
+            <div class="card-body">
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-success">Изменить</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <h4 class="card-title">Запись отсутствует или удалена</h4>
+    {% endif %}
+{% endblock %}

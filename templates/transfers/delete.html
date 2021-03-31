@@ -1,0 +1,21 @@
+{% extends "__base.html" %}
+{% block container %}
+    {% if request.user == transfer.user %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Удалить запись {{object}}</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="alert alert-warning" role="alert">
+                        Вы уверены что хотите удалить запись: <strong>{{ object }}</strong>?
+                    </div>
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <h4 class="card-title">Запись отсутствует или удалена</h4>
+    {% endif %}
+{% endblock %}

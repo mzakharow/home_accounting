@@ -1,0 +1,78 @@
+{% extends "__base.html" %}
+
+{% block container %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Добавить запись</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <label for="id_sum">Сумма:</label>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" name="sum" step="0.01" required="" id="id_sum">
+                    <select class="form-control" name="type_transfer" id="id_type_transfer">
+                        <option value="-" selected>Расход</option>
+                        <option value="+">Приход</option>
+                    </select>
+                </div>
+            </div>
+                <label for="id_category">Категория:</label>
+                <div class="col-md-6">
+                    <p>
+                        <select class="form-control" name="category" id="id_category">
+                            {% for category in category_list %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                </div>
+
+                <label for="id_comment">Комментарий:</label>
+                <div class="col-md-6">
+                    <p>
+                        <textarea class="form-control" name="comment" maxlength="200" id="id_comment"></textarea>
+                    </p>
+                </div>
+                <button type="submit" class="btn btn-success">Записать</button>
+            </form>
+        </div>
+    </div>
+    {%  if object_list.count == 0 %}
+        <p>
+        <h2><span class="badge badge-secondary">У Вас еще нет записанных операций</span></h2>
+        </p>
+    {% else %}
+        <p>
+        <h2>История операций на {% now "d.m.Y" %}.
+            {% if over_budget < 0 %}
+                Баланс на текущий месяц: <span class="badge badge-danger">{{ total_sum }} руб.</span>
+            {% else %}
+                Баланс на текущий месяц: <span class="badge badge-success">{{ total_sum }} руб.</span>
+            {% endif %}
+        </h2>
+        </p>
+        <table class="table">
+            <tr>
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Операция</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for transfer in object_list %}
+                    <tr>
+                        <td><a href="{% url 'transfer-detail' transfer.pk %}">{{ transfer.data|date:"d.m.Y H:i:s" }}</a></td>
+                        <td><a href="{% url 'transfer-detail' transfer.pk %}">{{ transfer.type_transfer }} {{transfer.sum}}</a></td>
+                        <td><a href="{% url 'transfer-update' transfer.pk %}" class="btn btn-info" role="button">Подробнее</a></td>
+                        <td><a href="{% url 'transfer-delete' transfer.pk %}" class="btn btn-danger" role="button">Удалить</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
