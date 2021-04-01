@@ -30,10 +30,11 @@ class TransfersView(CreateView):
 
     def get_context_data(self, **kwargs):
         kwargs['object_list'] = self.request.user.transfer_set.all().order_by('-data')
-        time_zone = pytz.timezone(settings.TIME_ZONE)
+        # time_zone = pytz.timezone(settings.TIME_ZONE)
+        time_zone = pytz.timezone('UTC')
         positive_sum = Transfer.objects.filter(user=self.request.user,
                                                type_transfer='+',
-                                               data__range=(datetime.datetime.now(time_zone).replace(day=1),
+                                               data__range=(datetime.datetime.now(time_zone).replace(day=1, hour=0,minute=0,second=0,microsecond=0),
                                                             datetime.datetime.now(time_zone))).aggregate(Sum('sum'))
         negative_sum = Transfer.objects.filter(user=self.request.user,
                                                type_transfer='-',

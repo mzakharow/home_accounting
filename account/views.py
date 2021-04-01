@@ -27,7 +27,6 @@ def user_login(request):
                 return HttpResponse('Disabled account')
         else:
             messages.success(request, 'Неверный логин или пароль')
-            # form = LoginForm()
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
@@ -47,10 +46,7 @@ def register(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    subject = f"Регистрация на сайте 'Личная Бухгалтерия'"
-                    message = f"Поздравляем, {cd['username']}! \nВы зарегистрированы!"
-                    send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['email']])
-                    # send_mail_task.delay(cd['email'], cd['username'])
+                    send_mail_task.delay(cd['email'], cd['username'])
                     return HttpResponseRedirect(reverse('transfers-list'))
                 else:
                     return HttpResponse('Disabled account')
