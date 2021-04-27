@@ -46,7 +46,10 @@ def register(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    send_mail_task.delay(cd['email'], cd['username'])
+                    subject = f"Регистрация на сайте 'Личная Бухгалтерия'"
+                    message = f"Поздравляем, {cd['username']}! \nВы зарегистрированы!"
+                    send_mail(subject, message, settings.EMAIL_HOST_USER, [cd['email']])
+                    # send_mail_task.delay(cd['email'], cd['username'])
                     return HttpResponseRedirect(reverse('transfers-list'))
                 else:
                     return HttpResponse('Disabled account')

@@ -16,11 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
+from rest_framework.routers import SimpleRouter
+
+from rest.views import TransferViewSet
+
+router = SimpleRouter()
+router.register(r'transfer', TransferViewSet)
 
 urlpatterns = [
     path('', include('transfers.urls')),
     path('account/', include(('account.urls'), namespace='account')),
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += router.urls
 
 urlpatterns += staticfiles_urlpatterns()

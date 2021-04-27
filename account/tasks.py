@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from home_accounting import settings
 
 
-@task
+# @task
 def send_mail_task(email, username):
     subject = f"Регистрация на сайте 'Личная Бухгалтерия'"
     message = f"Поздравляем, {username}! \nВы зарегистрированы!"
