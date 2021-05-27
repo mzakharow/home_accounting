@@ -128,6 +128,15 @@ EMAIL_PORT = base_settings.EMAIL_PORT
 DEFAULT_FROM_EMAIL = base_settings.DEFAULT_FROM_EMAIL
 EMAIL_USE_TLS = base_settings.EMAIL_USE_TLS
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 
 # CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
